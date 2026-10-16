@@ -1,0 +1,132 @@
+{
+  "info": {
+    "name": "COMP3123_Assignment1_Collection",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "base_url", "value": "http://localhost:8081" },
+    { "key": "token_a", "value": "" },
+    { "key": "token_b", "value": "" },
+    { "key": "emp_a_id", "value": "" },
+    { "key": "emp_b_id", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "0. Health Check",
+      "request": {
+        "method": "GET",
+        "url": "{{base_url}}/health"
+      }
+    },
+    {
+      "name": "1. User A Signup (201)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"userA_luna\",\n  \"email\": \"userA@test.com\",\n  \"password\": \"Password123!\"\n}"
+        },
+        "url": "{{base_url}}/api/v1/user/signup"
+      }
+    },
+    {
+      "name": "2. User A Login (200)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"userA_luna\",\n  \"password\": \"Password123!\"\n}"
+        },
+        "url": "{{base_url}}/api/v1/user/login"
+      }
+    },
+    {
+      "name": "3. User B Signup (201)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"userB_mateo\",\n  \"email\": \"userB@test.com\",\n  \"password\": \"Password123!\"\n}"
+        },
+        "url": "{{base_url}}/api/v1/user/signup"
+      }
+    },
+    {
+      "name": "4. User B Login (200)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"userB@test.com\",\n  \"password\": \"Password123!\"\n}"
+        },
+        "url": "{{base_url}}/api/v1/user/login"
+      }
+    },
+    {
+      "name": "5. User A Create Employee (201)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{token_a}}" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"first_name\": \"Carlos\",\n  \"last_name\": \"Sainz\",\n  \"email\": \"carlos@company.com\",\n  \"position\": \"Senior Software Engineer\",\n  \"salary\": 95000,\n  \"date_of_joining\": \"2024-03-15\",\n  \"department\": \"Engineering\"\n}"
+        },
+        "url": "{{base_url}}/api/v1/emp/employees"
+      }
+    },
+    {
+      "name": "6. User A Get All Employees (200)",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer {{token_a}}" }],
+        "url": "{{base_url}}/api/v1/emp/employees"
+      }
+    },
+    {
+      "name": "7. User A Get Employee By ID (200)",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer {{token_a}}" }],
+        "url": "{{base_url}}/api/v1/emp/employees/{{emp_a_id}}"
+      }
+    },
+    {
+      "name": "8. User A Update Employee (200)",
+      "request": {
+        "method": "PUT",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{token_a}}" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"position\": \"Lead Software Engineer\",\n  \"salary\": 110000\n}"
+        },
+        "url": "{{base_url}}/api/v1/emp/employees/{{emp_a_id}}"
+      }
+    },
+    {
+      "name": "9. Cross-User Security Test (User B accessing User A - 403)",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer {{token_b}}" }],
+        "url": "{{base_url}}/api/v1/emp/employees/{{emp_a_id}}"
+      }
+    },
+    {
+      "name": "10. User A Delete Employee (204)",
+      "request": {
+        "method": "DELETE",
+        "header": [{ "key": "Authorization", "value": "Bearer {{token_a}}" }],
+        "url": "{{base_url}}/api/v1/emp/employees?eid={{emp_a_id}}"
+      }
+    }
+  ]
+}
